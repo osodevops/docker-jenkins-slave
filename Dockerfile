@@ -1,19 +1,12 @@
-FROM jenkinsci/jnlp-slave:3.27-1
-MAINTAINER sion@osodevops.io
-
+FROM jenkins/jnlp-slave
 USER root
-
-RUN apt-get update \
-    && apt-get install -y apt-transport-https ca-certificates \
-    && apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D \
-    && echo deb https://apt.dockerproject.org/repo debian-jessie main >> /etc/apt/sources.list.d/docker.list \
-    && apt-get update \
-    && apt-get install -y docker-engine \
-    && apt-get install -y btrfs-tools \
-    && rm -rf /var/lib/apt/lists/*
-
-ADD start-slave.sh /root/
-
-RUN echo "jenkins    ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-ENTRYPOINT ["/root/launch-slave.sh"]
+ENV AWS_DEFAULT_REGION eu-west-2
+RUN apt-get update && \
+        apt-get install -y apt-transport-https && \
+        echo "deb https://dl.bintray.com/sbt/debian /" >> /etc/apt/sources.list.d/sbt.list && \
+        apt-key adv --keyserver hkps://keyserver.ubuntu.com:443 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823 && \
+        apt-get update && \
+        apt-get install sbt && \
+        curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+        python get-pip.py && \
+        pip install awscli
