@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -x
 
 DOCKER_SOCKET=/var/run/docker.sock

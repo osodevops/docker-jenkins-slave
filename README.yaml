@@ -5,40 +5,37 @@
 #
 
 # Name of this project
-name: ""
+name: "Jenkins Slave node running in Docker"
 
 # Short description of this project
 description: |-
-  Add here
+  Slave node running on Linux operating systems, which connects to the master via JNLP.
 
 # Canonical GitHub repo
-github_repo: osodevops/some-repo
+github_repo: osodevops/docker-jenkins-slave
 
 # How to use this project
 usage: |-
-  ### Requirements
-  None.
-
-  ### Role Variables
-  Some information
-  ```yaml
-    ---
-  ```
+  ### Jenkins Master
+  Build and start a node from [here](https://github.com/osodevops/docker-jenkins-master)
 
 # Example usage
 examples: |-
-  Follow this example
-  ```yaml
-      ---
+  ### Running slaves
+  If you would like to start one (or several) Jenkins slaves.
+  ```shell
+    $docker build -f DockerfileSlave -t jenkins-slave .
+    $docker run -d -v /var/run/docker.sock:/var/run/docker.sock --rm --name jenkins-slave jenkins-slave -url <master-url> <secret> <host>
   ```
+   - __master-url__: is the URL of your jenkins
+   - __ secret__: is the agent secret
+   - __host__: is the agent name
+  Add `-v /srv:/srv --privileged` on the target's slave
 
 related:
-  - name: ""
-    description: ""
-    url: "https://github.com/osodevops/"
-
-# References
-references:
-  - name: ""
-    description: ""
-    url: "https://"
+  - name: "Jenkins Master running in Docker"
+    description: "A Jenkins master comes with the basic installation of Jenkins"
+    url: "https://github.com/osodevops/docker-jenkins-master"
+  - name: "Jenkins Operations Center Tutorial (CJOC)"
+    description: "CJOC is used for managing multiple Jenkins Masters. It makes it much easier to scale Jenkins horizontally, as it makes it possible to share build nodes between masters."
+    url: "https://github.com/osodevops/docker-jenkins-cjoc"
